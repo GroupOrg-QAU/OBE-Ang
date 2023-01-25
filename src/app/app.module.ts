@@ -11,7 +11,6 @@ import { AuthComponent } from './layouts/auth/auth.component';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrModule } from 'ngx-toastr';
 import { DataService } from './services/data.service';
-import { PdfService } from './services/pdf.service';
 
 @NgModule({
   declarations: [
@@ -33,8 +32,7 @@ import { PdfService } from './services/pdf.service';
   ],
   providers: [
     CookieService,
-    DataService,
-    PdfService
+    DataService
   ],
   bootstrap: [AppComponent]
 })

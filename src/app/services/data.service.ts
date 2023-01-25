@@ -28,7 +28,7 @@ export class DataService {
 
   constructor(
     private httpClient: HttpClient
-  ) { 
+  ) {
     this.userModel = JSON.parse(localStorage.getItem('user') || "");
   }
 
@@ -37,14 +37,14 @@ export class DataService {
       this.httpClient.get<{ curriculums: any[] }>(`${environment.serverUrl}/curriculums`, {
         headers: this.httpHeaders
       })
-      .toPromise()
-      .then(res => {
-        this.curriculumsSub.next(res?.curriculums.filter(e => e.deptName === this.userModel?.department).map(e => e as Curriculum));
-        this.curriculumRetrieved = true;
-      }, err => {
-        console.log(">>> error: ", err);
-        
-      });
+        .toPromise()
+        .then(res => {
+          this.curriculumsSub.next(res?.curriculums.filter(e => e.deptName === this.userModel?.department).map(e => e as Curriculum));
+          this.curriculumRetrieved = true;
+        }, err => {
+          console.log(">>> error: ", err);
+
+        });
     }
   }
 
@@ -53,16 +53,16 @@ export class DataService {
       this.httpClient.get<{ courses: Course[] }>(`${environment.serverUrl}/courses`, {
         headers: this.httpHeaders
       })
-      .toPromise()
-      .then((res) => {
-        this.coursessSub.next(res?.courses.filter(x => x.courseOwnerId === this.userModel._id));    
-        this.coursesRetrieved = true;
-      }, (err) => {
-        console.log(">>> error: ", err);
-        
-      })
+        .toPromise()
+        .then((res) => {
+          this.coursessSub.next(res?.courses.filter(x => x.courseOwnerId === this.userModel._id));
+          this.coursesRetrieved = true;
+        }, (err) => {
+          console.log(">>> error: ", err);
+
+        })
     }
-  } 
+  }
 }
 
 /**

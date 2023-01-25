@@ -3,34 +3,30 @@
     <div class="card border">
       <div class="card-header bg-white">
         <div class="row">
-          <div class="col-12">
-            <h4 class="m-0 my-1">
-              <span class="text-sm text-muted">Course Outcome - </span>
-              <span class="text-dark">{{ courseModel?.courseTitle | uppercase }}</span>
-            </h4>
-          </div>
-        </div>
-        <div class="row mt-2">
           <div class="col-12 col-sm-6">
-            <div class="d-flex flex-wrap">
-              <button class="btn btn-sm mr-1 mb-1" *ngFor="let coType of coTypes; index as idx"
-                (click)="filterListByCOType(coType.value)" [ngClass]="{
-                  'btn-primary': selectedCOType === idx,
-                  'btn-outline-primary': selectedCOType !== idx
-                }">
-                {{ coType.name }}
-              </button>
+            <div class="d-flex flex-column">
+              <h4 class="m-0">{{ courseModel?.courseTitle | titlecase }}</h4>
+              <h6 class="text-muted text-sm m-0 my-1">Course Outcome</h6>
+              <div class="d-flex flex-wrap">
+                <button class="btn btn-sm mr-1 mb-1" *ngFor="let coType of coTypes; index as idx"
+                        (click)="filterListByCOType(coType.value)" [ngClass]="{
+                    'btn-primary': selectedCOType === idx,
+                    'btn-outline-primary': selectedCOType !== idx
+                  }">
+                  {{ coType.name }}
+                </button>
+              </div>
             </div>
           </div>
           <div class="col-12 col-sm-6">
             <div class="d-flex flex-column justify-content-end align-items-end" style="height: 100%;">
               <button class="btn btn-primary d-flex align-items-center float-right"
-              (click)="openCourseOutcomeModal(courseOutcomeModal)">
-              <span class="material-icons mr-1">add</span>
-              Course Outcome
-            </button>
+                      (click)="openCourseOutcomeModal(courseOutcomeModal)">
+                <span class="material-icons mr-1">add</span>
+                Course Outcome
+              </button>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -45,32 +41,32 @@
       <div class="table-responsive" *ngIf="courseOutcomeList.length !== 0">
         <table class="table table-flush">
           <thead class="thead-light">
-            <tr>
-              <th>CO Code</th>
-              <th>CO Statement</th>
-              <th>Delivery Methods</th>
-              <th>Bloom Taxonomy Levels</th>
-              <th class="text-center">Actions</th>
-            </tr>
+          <tr>
+            <th>CO Code</th>
+            <th>CO Statement</th>
+            <th>Delivery Methods</th>
+            <th>Bloom Levels</th>
+            <th>Actions</th>
+          </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let co of courseOutcomeList; index as idx">
-              <td>{{ co.coCode }}</td>
-              <td class="w-50 text-wrap">{{ co.coCodeStatement }}</td>
-              <td>{{ co.deliveryMethod }}</td>
-              <td>
-                <p *ngFor="let level of co.cognitiveDomain; index as idx" class="text-sm m-0">
-                  {{ getFormattedBloomLevelInfo(level) }}
-                </p>
-              </td>
-              <td>
-                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
-                  (click)="openCourseOutcomeModal(courseOutcomeModal, co)">
-                  Update
-                </button>
-                <button type="button" class="btn btn-danger btn-sm w-100 mb-1" (click)="deleteCO(deleteModal, co._id)">Delete</button>
-              </td>
-            </tr>
+          <tr *ngFor="let co of courseOutcomeList; index as idx">
+            <td>{{ co.coCode }}</td>
+            <td class="w-50 text-wrap">{{ co.coCodeStatement }}</td>
+            <td>{{ co.deliveryMethod }}</td>
+            <td>
+              <p *ngFor="let level of co.cognitiveDomain; index as idx" class="text-sm m-0">
+                {{ getFormattedBloomLevelInfo(level) }}
+              </p>
+            </td>
+            <td>
+              <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
+                      (click)="openCourseOutcomeModal(courseOutcomeModal, co)">
+                Update
+              </button>
+              <button type="button" class="btn btn-danger btn-sm mr-1 mb-1" (click)="deleteCO(deleteModal, co._id)">Delete</button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -101,10 +97,10 @@
       <div class="form-group col-12">
         <label for="coCodeStatement" class="text-sm">Course Outcome Statement</label>
         <textarea id="coCodeStatement" type="text" name="coCodeStatement" formControlName="coCodeStatement" rows="4"
-          class="form-control"></textarea>
+                  class="form-control"></textarea>
       </div>
       <div class="form-group col-12 d-flex flex-column">
-        <label class="text-sm text-muted">Bloom Taxonomy Levels</label>
+        <label class="text-sm text-muted">Bloom Levels</label>
         <div class="btn-group btn-group-toggle" ngbRadioGroup>
           <label ngbButtonLabel class="btn-sm {{ getCheckedValue(key) ? 'btn-primary' : 'btn-outline-primary' }}" *ngFor="let key of bloomLevelKeys; index as idx" >
             <input ngbButton type="checkbox" (change)="onChange(key)">
@@ -120,7 +116,7 @@
         <label class="text-sm text-muted">Lab Hours</label>
         <input id="labHrs" type="text" name="labHrs" formControlName="labHrs" class="form-control">
       </div>
-      
+
       <div class="form-group col-12">
         <label class="text-sm">Delivery Method</label>
         <select name="deliveryMethod" id="deliveryMethod" class="custom-select" formControlName="deliveryMethod">
@@ -156,7 +152,7 @@
   <div class="modal-header d-flex justify-content-between align-items-center border-0">
     <!-- <h6 class="m-0">Are you sure want to delete this course outcome?</h6> -->
     <button type="button" class="close" aria-label="Close" id="closeModal" #closeModal
-      (click)="modal.dismiss('Cross click')">
+            (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -168,7 +164,7 @@
   </div>
   <div class="modal-footer border-0">
     <button type="button" class="btn btn-sm btn-dark float-right mr-2"
-      (click)="modal.dismiss('Cross click')">
+            (click)="modal.dismiss('Cross click')">
       NO
     </button>
     <button type="submit" class="btn btn-sm btn-danger float-right mr-2" (click)="modal.close('1')">

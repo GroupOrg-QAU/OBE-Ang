@@ -7,8 +7,8 @@
             <h4>Courses</h4>
           </div>
           <div class="col-12 col-sm-6">
-            <button class="btn d-flex align-items-center float-right"
-              (click)="openCourseModal(courseModal)">
+            <button class="btn btn-primary d-flex align-items-center float-right"
+                    (click)="openCourseModal(courseModal)">
               <span class="material-icons mr-1">add</span>
               Course
             </button>
@@ -18,51 +18,45 @@
       <div class="table-responsive">
         <table class="table table-flush">
           <thead class="thead-light">
-            <tr>
-              <th>Sr. No</th>
-              <th>Course Title / Course Code</th>
-              <th>Type of Course / Course Domain</th>
-              <!-- <th>Course Reviewer / Dept.</th> -->
-              <th>Total Marks</th>
-              <th>Created On</th>
-              <th>Actions</th>
-            </tr>
+          <tr>
+            <th>Sr. No</th>
+            <th>Course Title / Course Code</th>
+            <th>Type of Course / Course Domain</th>
+            <!-- <th>Course Reviewer / Dept.</th> -->
+            <th>Total Marks</th>
+            <th>Created On</th>
+            <th>Actions</th>
+          </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let course of courses; index as idx">
-              <td>{{ idx + 1 }}</td>
-              <td>
-                <div class="d-flex flex-column">
-                  <span>{{ course.courseTitle | titlecase }}</span>
-                  <span class="text-sm text-muted">{{ course.courseCode }}</span>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex flex-column">
-                  <span>{{ course.typeOfCourse }}</span>
-                  <span class="text-sm text-muted">{{ course.courseDomain }}</span>
-                </div>
-              </td>
-              <td>{{ course.totalMarks }}</td>
-              <td>
-                <div class="d-flex flex-column">
-                  <span>{{ course.createdAt | date: 'dd-MM-yyyy' }}</span>
-                  <span class="text-sm text-muted">{{ course.createdAt | date: 'hh:mm:ss a' }}</span>
-                </div>
-              </td>
-              <td>
-                <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
-                  (click)="navigateCourseOutcome(course._id)">
-                  Course Outcome
-                </button>
-                <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
-                  (click)="openCourseModal(courseModal, course)">
-                  Update
-                </button>
-                <button type="button" class="btn btn-sm mr-1 mb-1"
-                  (click)="deleteCourse(deleteModal, course._id)" style="background-color: red;">Delete</button>
-              </td>
-            </tr>
+          <tr *ngFor="let course of courses; index as idx">
+            <td>{{ idx + 1 }}</td>
+            <td>
+              <div class="d-flex flex-column">
+                <span>{{ course.courseTitle | titlecase }}</span>
+                <span class="text-sm text-muted">{{ course.courseCode }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex flex-column">
+                <span>{{ course.typeOfCourse }}</span>
+                <span class="text-sm text-muted">{{ course.courseDomain }}</span>
+              </div>
+            </td>
+            <td>{{ course.totalMarks }}</td>
+            <td>{{ course.createdAt | date: 'dd-MM-yyyy hh:mm:ss a' }}</td>
+            <td>
+              <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
+                      (click)="navigateCourseOutcome(course._id)">
+                Course Outcome
+              </button>
+              <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
+                      (click)="openCourseModal(courseModal, course)">
+                Update
+              </button>
+              <button type="button" class="btn btn-danger btn-sm mr-1 mb-1" (click)="deleteCourse(deleteModal, course._id)">Delete</button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -89,7 +83,7 @@
         <div class="form-group col-12 col-sm-6">
           <label for="curriculum" class="text-sm">Curriculum</label>
           <select name="curriculum" id="curriculum" #curr class="custom-select" formControlName="curriculum"
-            (change)="curriculumTerms($event.target.value)">
+                  (change)="curriculumTerms($event.target.value)">
             <option [ngValue]="null">Select...</option>
             <option *ngFor="let curr of curriculums" [ngValue]="curr">
               {{ curr.curriculumName }}
@@ -105,13 +99,13 @@
             </option>
           </select>
         </div>
-        <!-- <div class="form-group col-12 col-sm-6">
+        <div class="form-group col-12 col-sm-6">
           <label for="courseDomain" class="text-sm">Course Domain:</label>
           <input type="text" name="courseDomain" formControlName="courseDomain" class="form-control">
-        </div> -->
+        </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Prerequisite Courses</label>
-          <input type="text" name="prerequisiteCourses" formControlName="prerequisiteCourses" class="form-control">
+          <input type="number" name="prerequisiteCourses" formControlName="prerequisiteCourses" class="form-control">
         </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Type of Course</label>
@@ -124,7 +118,7 @@
         </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Course Owner</label>
-          <input type="text" name="courseOwner" formControlName="courseOwner" class="form-control"  readonly>
+          <input type="text" name="courseOwner" formControlName="courseOwner" class="form-control" readonly>
         </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Course Code</label>
@@ -133,7 +127,7 @@
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Reviewer Department</label>
           <select name="typeOfCourse" id="reviewerDepartment" class="custom-select"
-            formControlName="reviewerDepartment">
+                  formControlName="reviewerDepartment">
             <option [ngValue]="null">Select...</option>
             <option *ngFor="let dept of departments; index as idx" [ngValue]="dept">
               {{ dept }}
@@ -148,14 +142,14 @@
           <label class="text-sm">Course Reviewer</label>
           <input type="text" name="courseReviewer" formControlName="courseReviewer" class="form-control">
         </div>
-        <!-- <div class="form-group col-12 col-sm-6">
+        <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Course Acronym</label>
           <input type="text" name="courseAcronym" formControlName="courseAcronym" class="form-control">
-        </div> -->
-        <!-- <div class="form-group col-12 col-sm-6">
+        </div>
+        <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Last Date to Review</label>
           <input type="date" name="lastDateToReview" formControlName="lastDateToReview" class="form-control">
-        </div> -->
+        </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Theory Credits</label>
           <input type="number" name="theoryCredits" formControlName="theoryCredits" class="form-control" min="1">
@@ -163,14 +157,14 @@
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Total Course Contact Hours</label>
           <input type="number" name="totalCourseConatactHours" formControlName="totalCourseConatactHours"
-            class="form-control">
+                 class="form-control">
         </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Tutorial Credits</label>
           <input type="number" name="tutorialCredits" formControlName="tutorialCredits" class="form-control">
         </div>
         <div class="form-group col-12 col-sm-6">
-          <label class="text-sm">Total Marks</label>
+          <label class="text-sm">Total CIA Marks</label>
           <input type="number" name="totalCiaWeightage" formControlName="totalCiaWeightage" class="form-control">
         </div>
         <div class="form-group col-12 col-sm-6">
@@ -185,22 +179,22 @@
           <label class="text-sm">Total Credits</label>
           <input type="number" name="totalCredits" formControlName="totalCredits" class="form-control">
         </div>
-        <!-- <div class="form-group col-12 col-sm-6">
+        <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Total TEE Marks</label>
           <input type="number" name="totalTeeMarks" formControlName="totalTeeMarks" class="form-control">
-        </div> -->
-        <!-- <div class="form-group col-12 col-sm-6">
+        </div>
+        <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Total CIA Weightage</label>
           <input type="number" name="totalCiaMarks" formControlName="totalCiaMarks" class="form-control">
-        </div> -->
+        </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Total Attendance Marks</label>
           <input type="number" name="totalAttendanceMarks" formControlName="totalAttendanceMarks" class="form-control">
         </div>
-        <!-- <div class="form-group col-12 col-sm-6">
+        <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Total TEE Weightage</label>
           <input type="number" name="totalTeeWeightage" formControlName="totalTeeWeightage" class="form-control">
-        </div> -->
+        </div>
         <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Total Theory/Practical marks</label>
           <input type="number" name="totalMarks" formControlName="totalMarks" class="form-control">
@@ -209,18 +203,18 @@
           <label class="text-sm">Total Weightage</label>
           <input type="number" name="totalWeightage" formControlName="totalWeightage" class="form-control">
         </div>
-        <!-- <div class="form-group col-12 col-sm-6">
+        <div class="form-group col-12 col-sm-6">
           <label class="text-sm">TEE Duration(Hours)</label>
           <input type="number" name="teeDuration" formControlName="teeDuration" class="form-control">
-        </div> -->
+        </div>
         <div class="form-group col-12 col-sm-6">
-          <label class="text-sm">Passing Marks</label>
+          <label class="text-sm">CIA passing Marks</label>
           <input type="number" name="ciaPassingMarks" formControlName="ciaPassingMarks" class="form-control">
         </div>
-        <!-- <div class="form-group col-12 col-sm-6">
+        <div class="form-group col-12 col-sm-6">
           <label class="text-sm">Bloom's Domain </label>
           <input type="text" name="sessionDuration" class="form-control">
-        </div> -->
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -247,7 +241,7 @@
 <ng-template #deleteModal let-modal>
   <div class="modal-header d-flex justify-content-between align-items-center border-0">
     <button type="button" class="close" aria-label="Close" id="closeModal" #closeModal
-      (click)="modal.dismiss('Cross click')">
+            (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -258,7 +252,8 @@
     </div>
   </div>
   <div class="modal-footer border-0">
-    <button type="button" class="btn btn-sm btn-dark float-right mr-2" (click)="modal.dismiss('Cross click')">
+    <button type="button" class="btn btn-sm btn-dark float-right mr-2"
+            (click)="modal.dismiss('Cross click')">
       NO
     </button>
     <button type="submit" class="btn btn-sm btn-danger float-right mr-2" (click)="modal.close('1')">

@@ -58,21 +58,21 @@ export class CourseOutcomeComponent implements OnInit, OnDestroy {
     this.data.getCourses();
     this.courseSub = this.data.coursessSub.subscribe(res => {
       if(res.length != 0) {
-        this.courseModel = res.find(x => x._id === this.courseId);        
+        this.courseModel = res.find(x => x._id === this.courseId);
       }
     });
 
     this.httpClient.get<{ coursesCO: CourseOutcomes[] }>(`${environment.serverUrl}/course-outcomes/${this.courseId}`, {
       headers: this.data.httpHeaders
     })
-    .toPromise()
-    .then((value) => {
-      this.courseOutcomeList = [ ...value.coursesCO ];
-      this.tempCourseOutcomeList = [ ...value.coursesCO ];
-      this.filterListByCOType();
-    }, (error) => {
-      // console.log(">>> Error: ", error);      
-    })
+      .toPromise()
+      .then((value) => {
+        this.courseOutcomeList = [ ...value.coursesCO ];
+        this.tempCourseOutcomeList = [ ...value.coursesCO ];
+        this.filterListByCOType();
+      }, (error) => {
+        // console.log(">>> Error: ", error);
+      })
   }
 
   filterListByCOType(coType: number = 0) {
@@ -108,19 +108,19 @@ export class CourseOutcomeComponent implements OnInit, OnDestroy {
   }
 
   onChange(value: any) {
-    let arrayValue: string[] = [...this.getControl().value];    
+    let arrayValue: string[] = [...this.getControl().value];
     if(arrayValue.includes(value)) {
       let idx = arrayValue.findIndex(x => x === value);
-      this.getControl().removeAt(idx);      
+      this.getControl().removeAt(idx);
       this.change.detectChanges();
     } else {
-      this.getControl().push(this.fb.control(value));      
+      this.getControl().push(this.fb.control(value));
       this.change.detectChanges();
     }
   }
-  
+
   getCheckedValue(value: string) {
-    let arrayValue: string[] = [...this.getControl().value];          
+    let arrayValue: string[] = [...this.getControl().value];
     return arrayValue.includes(value);
   }
 
@@ -137,20 +137,20 @@ export class CourseOutcomeComponent implements OnInit, OnDestroy {
     this.loader = true;
     let values: CourseOutcomes = { ...form.value };
     delete values._id;
-    values.cognitiveDomain = values.cognitiveDomain?.sort(); 
+    values.cognitiveDomain = values.cognitiveDomain?.sort();
     this.httpClient.post<{ response: CourseOutcomes, error: any }>(`${environment.serverUrl}/course-outcomes/add-co`, { ...values })
-    .toPromise()
-    .then((value) => {
-      // console.log(":>>> Value: ", value);
-      this.loader = false;
-      this.modalService.dismissAll();
-      this.toast.success("Course Outcome Added Successfully");
-      this.courseOutcomeList.push(value.response);
-    }, (err) => {
-      // console.log(">>> err: ", err);
-      this.loader = false;
-      this.toast.error(err.error.message);
-    });
+      .toPromise()
+      .then((value) => {
+        // console.log(":>>> Value: ", value);
+        this.loader = false;
+        this.modalService.dismissAll();
+        this.toast.success("Course Outcome Added Successfully");
+        this.courseOutcomeList.push(value.response);
+      }, (err) => {
+        // console.log(">>> err: ", err);
+        this.loader = false;
+        this.toast.error(err.error.message);
+      });
   }
 
   submitUpdateCOForm(form: FormGroup) {
@@ -158,36 +158,36 @@ export class CourseOutcomeComponent implements OnInit, OnDestroy {
     let values: CourseOutcomes = { ...form.value };
     values.cognitiveDomain = values.cognitiveDomain?.sort();
     this.httpClient.put<{ response: CourseOutcomes }>(`${environment.serverUrl}/course-outcomes/update-co/${form.value._id}`, { ...values })
-    .toPromise()
-    .then((value) => {
-      // console.log(":>>> Value: ", value);
-      this.loader = false;
-      this.modalService.dismissAll();
-      this.toast.success("Course Outcome Updated Successfully");
-      let idx = this.courseOutcomeList.findIndex(x => x._id === form.value._id);
-      this.courseOutcomeList[idx] = { ...value.response };
-    }, (err) => {
-      console.log(">>> err: ", err);
-      this.loader = false;
-      this.toast.error(err.error.message);
-    });
+      .toPromise()
+      .then((value) => {
+        // console.log(":>>> Value: ", value);
+        this.loader = false;
+        this.modalService.dismissAll();
+        this.toast.success("Course Outcome Updated Successfully");
+        let idx = this.courseOutcomeList.findIndex(x => x._id === form.value._id);
+        this.courseOutcomeList[idx] = { ...value.response };
+      }, (err) => {
+        console.log(">>> err: ", err);
+        this.loader = false;
+        this.toast.error(err.error.message);
+      });
   }
 
   deleteCO(modalRef: any, id: any) {
     this.modalService.open(modalRef).result.then((value) => {
       this.httpClient.delete(`${environment.serverUrl}/course-outcomes/delete-co/${id}`)
-      .toPromise()
-      .then((value) => {
-        this.toast.success("Course Outcome Deleted");
-        let idx = this.courseOutcomeList.findIndex(x => x._id === id);
-        this.courseOutcomeList.splice(idx, 1);
-      }, (err) => {
-        // console.log(">>> error", err);
-      });
-      
+        .toPromise()
+        .then((value) => {
+          this.toast.success("Course Outcome Deleted");
+          let idx = this.courseOutcomeList.findIndex(x => x._id === id);
+          this.courseOutcomeList.splice(idx, 1);
+        }, (err) => {
+          // console.log(">>> error", err);
+        });
+
     }, (err) => {
       console.log(">>> error: ", err);
-      
+
     })
   }
 

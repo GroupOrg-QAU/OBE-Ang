@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { CO_CODE } from 'src/app/models/constants';
 import { Course } from 'src/app/models/course';
 import { StudentAttainments } from 'src/app/models/student-attainments';
 import { DataService } from 'src/app/services/data.service';
-import { PdfService } from 'src/app/services/pdf.service';
 import { environment } from 'src/environments/environment';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-co-attainment',
@@ -33,16 +34,14 @@ export class CoAttainmentComponent implements OnInit {
 
   benchMark: number = 0;
   totalStudents: number = 0;
-  docRef: any;
-  docRefBool: boolean = false;
 
   constructor(
     private toast: ToastrService,
     private router: Router,
+    private route: ActivatedRoute,
     private httpClient: HttpClient,
     private dataService: DataService,
-    private modalService: NgbModal,
-    public pdfService: PdfService
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -57,27 +56,27 @@ export class CoAttainmentComponent implements OnInit {
     this.modalService.open(modalRef).result
       .then((value: number) => {
         let num = Number(value) || 0;
-        if (num > 0 && num <= 100) {
+        if(num > 0 && num <= 100) {
           this.benchMark = num;
           this.getStudentAttainments(this.selectedCourse?._id);
         } else {
           this.toast.warning("Bench Mark should be greater than 0 and less than or equal to 100", "Warning");
         }
-      }, (error) => { });
+      }, (error) => {});
   }
 
-  // openInDirectAttainmentModal(modalRef: any) {
-  //   this.modalService.open(modalRef).result
-  //     .then((value: number) => {
-  //       let num = Number(value) || 0;
-  //       if (num > 0) {
-  //         this.totalStudents = num;
-  //         this.getSurvey(this.selectedCourse?._id);
-  //       } else {
-  //         this.toast.warning("Value should be greater than 0", "Warning");
-  //       }
-  //     }, (error) => { });
-  // }
+  openInDirectAttainmentModal(modalRef: any) {
+    this.modalService.open(modalRef).result
+      .then((value: number) => {
+        let num = Number(value) || 0;
+        if(num > 0) {
+          this.totalStudents = num;
+          this.getSurvey(this.selectedCourse?._id);
+        } else {
+          this.toast.warning("Value should be greater than 0", "Warning");
+        }
+      }, (error) => {});
+  }
 
   getStudentAttainments(courseId: string | undefined) {
     this.httpClient.get<{ ciaMarks: StudentAttainments[], eseMarks: StudentAttainments[] }>(
@@ -88,16 +87,13 @@ export class CoAttainmentComponent implements OnInit {
         this.ciaAttainment = this.calculateAttainemnt(this.formatRecord([...value.ciaMarks]));
         this.eseAttainment = this.calculateAttainemnt(this.formatRecord([...value.eseMarks]));
         this.totalDirectAttainment = CO_CODE.map((code, idx) => {
-          let coAttain = this.ciaAttainment[idx]['attaimentPercentage'];
-          if(this.eseAttainment[idx]['attaimentPercentage'] !== 0) {
-            coAttain = (0.4 * Math.round(this.ciaAttainment[idx]['attaimentPercentage'] * 100)) + (0.6 * Math.round(this.eseAttainment[idx]['attaimentPercentage'] * 100));
-          }
+          let coAttain = (0.4 * Math.round(this.ciaAttainment[idx]['attaimentPercentage'] * 100)) + (0.6 * Math.round(this.eseAttainment[idx]['attaimentPercentage'] * 100));
           let attainmentObj = this.checkAttainment(coAttain);
           return {
             'coCode': code,
             'ciaPercentage': this.ciaAttainment[idx]['attaimentPercentage'],
             'esePercentage': this.eseAttainment[idx]['attaimentPercentage'],
-            'totalAttainment': coAttain,
+            'totalAttainment': coAttain / 100,
             'attainmentLevel': attainmentObj.attainmentLevel,
             'date': new Date()
           };
@@ -109,16 +105,14 @@ export class CoAttainmentComponent implements OnInit {
 
   calculateTotalAttainment() {
     this.totalAttainment = CO_CODE.map((code, idx) => {
-      let directTA = this.totalDirectAttainment[idx]['totalAttainment'] || 0;
-      let indirectTA = this.totalIndirectAttainment.length !== 0 ? this.totalIndirectAttainment[idx]['totalAvg'] || 0 : 0;
+      let coAttain = (0.9 * Math.round(this.totalDirectAttainment[idx]['totalAttainment'] * 100)) + (0.1 * Math.round(this.totalIndirectAttainment[idx]['totalAvg']));
 
-      let coAttain = (0.9 * Math.round(directTA * 100)) + (0.1 * (Math.round(indirectTA)));
       let attainmentLevel = this.checkAttainment(coAttain).attainmentLevel;
       return {
         coCode: code,
-        directAttainment: directTA,
-        indirectAttainment: (indirectTA / 100) || 0,
-        totalCOAttainment: (coAttain / 100).toFixed(2),
+        directAttainment: this.totalDirectAttainment[idx]['totalAttainment'],
+        indirectAttainment: this.totalIndirectAttainment[idx]['totalAvg'] / 100,
+        totalCOAttainment: coAttain,
         attainmentLevel: attainmentLevel
       };
     });
@@ -135,27 +129,18 @@ export class CoAttainmentComponent implements OnInit {
       ciaAttainment: [...this.ciaAttainment],
       eseAttainment: [...this.eseAttainment],
       directAttainment: [...this.totalDirectAttainment],
-      indirectAttainment: [...this.totalIndirectAttainment] || [],
+      indirectAttainment: [...this.totalIndirectAttainment],
       totalAttainment: [...this.totalAttainment]
     };
-
-    this.docRefBool = true;
-    this.docRef = this.pdfService.getPdfContent({
-      courseName: tottalCoAttainmentObj.courseTitle,
-      curriculumName: tottalCoAttainmentObj.curriculumName,
-      ciaMarks: this.ciaAttainment,
-      eseMarks: this.eseAttainment,
-      directAttainment: this.totalDirectAttainment,
-      indirectAttainment: this.totalIndirectAttainment,
-      totalAttianment: this.totalAttainment
-    });
 
     this.httpClient.post(
       `${environment.serverUrl}/totalcoattainments/add-total-co-attainment`,
       { ...tottalCoAttainmentObj }, {
-      headers: this.dataService.httpHeaders
-    }).toPromise()
+        headers: this.dataService.httpHeaders
+      }).toPromise()
       .then((value) => {
+        console.log("total co attainment >>>>>>",value);
+
         this.toast.success("Total CO Attainment Added Successfully");
       }, (error) => {
         console.error(">>> error: ", error);
@@ -206,7 +191,7 @@ export class CoAttainmentComponent implements OnInit {
 
   calculateAttainemnt(stdRecords: StudentAttainments[]) {
     // let benchMark = 60;
-    let coCODEs = [...CO_CODE];
+    let coCODEs = [ ...CO_CODE ];
     let CO_Object: any = {
       "CO1": { coCode: "CO1", count: 0, maximumMarks: 0, attainment: "Not Applicable", attainmentLevel: 0, attainmentType: "Very Low", attaimentPercentage: 0 },
       "CO2": { coCode: "CO2", count: 0, maximumMarks: 0, attainment: "Not Applicable", attainmentLevel: 0, attainmentType: "Very Low", attaimentPercentage: 0 },
@@ -261,25 +246,25 @@ export class CoAttainmentComponent implements OnInit {
     return Object.values(CO_Object) || [];
   }
 
-  getSurvey() {
-    this.httpClient.get<{ surveys: any[] }>(
-      `${environment.serverUrl}/surveys/${this.selectedCourse?._id}`,
+  getSurvey(courseId : string | undefined) {
+    this.httpClient.get<{ surveys : any[] }>(
+      `${environment.serverUrl}/surveys/${courseId}`,
       { headers: this.dataService.httpHeaders }
     )
       .toPromise()
-      .then((response) => {
-        console.log(">>> surveys ", response);
+      .then((value) => {
+        console.log(">>> surveys ", value);
         // let totalStudents = 8;
-        let ratings: any[] = response.surveys.map(e => [...e.rating]);
+        let ratings: any[] = value.surveys.map(e => [...e.rating]);
         let map: Map<string, any> = new Map<string, any>();
         ratings.forEach((rate, idx) => {
           CO_CODE.forEach((code: string) => {
-            if (map.has(code)) {
+            if(map.has(code)) {
               let rateArray: any[] = map?.get(code);
-              rateArray?.push({ ...rate.filter((x: any) => x.coCode === code)[0] })
+              rateArray?.push({...rate.filter((x: any) => x.coCode === code)[0]})
               map.set(code, rateArray)
             } else {
-              map.set(code, [...rate.filter((x: any) => x.coCode === code)])
+              map.set(code, [ ...rate.filter((x: any) => x.coCode === code) ])
             }
           });
         });
@@ -304,12 +289,12 @@ export class CoAttainmentComponent implements OnInit {
             4: getSum(4),
             5: getSum(5),
             totalSum: totalSum,
-            totalAvg: (totalSum / response.surveys.length).toFixed(2),
-            totalStudents: response.surveys.length,
+            totalAvg: totalSum / this.totalStudents,
+            totalStudents: this.totalStudents,
           };
           this.totalIndirectAttainment.push({
             ...temp,
-            attainmentLevel: this.checkAttainment(Number(temp.totalAvg)).attainmentLevel
+            attainmentLevel: this.checkAttainment(temp.totalAvg).attainmentLevel
           });
         });
       }, (error) => {

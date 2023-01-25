@@ -31,12 +31,11 @@ export class CoursesComponent implements OnInit {
   coursesSub: Subscription | undefined;
 
   terms: Term[] = [];
-  
+
   courseType: any;
   departments: any;
 
   userModel: User = JSON.parse(localStorage.getItem("user") || "");
-  
 
   constructor(
     private fb: FormBuilder,
@@ -51,7 +50,7 @@ export class CoursesComponent implements OnInit {
   ngOnInit(): void {
     this.courseType = COURSE_TYPE;
     this.departments = DEPARTMENTS;
-    this.getCourses();    
+    this.getCourses();
   }
 
   getCourses() {
@@ -69,11 +68,11 @@ export class CoursesComponent implements OnInit {
       this.courseForm = this.fb.group({
         curriculum: [null],
         term: [null],
-        // courseDomain: [null],
+        courseDomain: [null],
         typeOfCourse: [null], //Theory, Theory with Lab, Lab/Project Works/Others
         courseCode: [null],
         courseTitle: [null],
-        // courseAcronym: [null],
+        courseAcronym: [null],
         theoryCredits: [null],
         tutorialCredits: [null],
         practicalCredits: [null],
@@ -87,7 +86,7 @@ export class CoursesComponent implements OnInit {
         courseOwnerId: [this.userModel._id],
         reviewerDepartment: [this.userModel.department],
         courseReviewer: [null],
-        // lastDateToReview: [null],
+        lastDateToReview: [null],
         totalCourseConatactHours: [null],
         totalCiaMarks: [null],
         totalMidTermMarks: [null],
@@ -95,7 +94,7 @@ export class CoursesComponent implements OnInit {
         totalAttendanceMarks: [null],
         totalMarks: [null],
         teeDuration: [null],
-        // blommsDomain: [null],
+        blommsDomain: [null],
         state: [true]
       });
     } else {
@@ -103,16 +102,16 @@ export class CoursesComponent implements OnInit {
       let currObj = this.curriculums.find(x => x._id === courseObj.curriculumId);
       this.terms = currObj?.terms || [];
       let termObj = this.terms.find(x => x._id === courseObj.termId);
-      
+
       this.courseForm = this.fb.group({
         _id: [courseObj._id],
         curriculum: [currObj],
         term: [termObj],
-        // courseDomain: [courseObj.courseDomain],
+        courseDomain: [courseObj.courseDomain],
         typeOfCourse: [courseObj.typeOfCourse], //Theory, Theory with Lab, Lab/Project Works/Others
         courseCode: [courseObj.courseCode],
         courseTitle: [courseObj.courseTitle],
-        // courseAcronym: [courseObj.courseAcronym],
+        courseAcronym: [courseObj.courseAcronym],
         theoryCredits: [courseObj.theoryCredits],
         tutorialCredits: [courseObj.tutorialCredits],
         practicalCredits: [courseObj.practicalCredits],
@@ -126,7 +125,7 @@ export class CoursesComponent implements OnInit {
         courseOwnerId: [this.userModel._id],
         reviewerDepartment: [this.userModel.department],
         courseReviewer: [courseObj.courseReviewer],
-        // lastDateToReview: [new DatePipe('en-US').transform(courseObj.lastDateToReview, 'yyyy-MM-dd')],
+        lastDateToReview: [new DatePipe('en-US').transform(courseObj.lastDateToReview, 'yyyy-MM-dd')],
         totalCourseConatactHours: [courseObj.totalCourseConatactHours],
         totalCiaMarks: [courseObj.totalCiaMarks],
         totalMidTermMarks: [courseObj.totalMidTermMarks],
@@ -134,10 +133,10 @@ export class CoursesComponent implements OnInit {
         totalAttendanceMarks: [courseObj.totalAttendanceMarks],
         totalMarks: [courseObj.totalMarks],
         teeDuration: [courseObj.teeDuration],
-        // blommsDomain: [courseObj.blommsDomain],
+        blommsDomain: [courseObj.blommsDomain],
         state: [courseObj.state]
       });
-      
+
     }
   }
 
@@ -145,7 +144,7 @@ export class CoursesComponent implements OnInit {
     this.data.getCurriculums();
     this.data.curriculumsSub.subscribe(list => {
       if(list.length != 0) {
-        this.curriculums = list;        
+        this.curriculums = list;
         this.initialiseForm(course);
         this.modalService.open(modalRef, {
           size: 'lg',
@@ -159,8 +158,8 @@ export class CoursesComponent implements OnInit {
   submitForm(form: FormGroup) {
     this.loader = true;
     let values = { ...form.value };
-    let courseObj: Course | any = { ...form.value };    
-    
+    let courseObj: Course | any = { ...form.value };
+
     delete courseObj['curriculum'];
     delete courseObj['term'];
     courseObj.curriculumId = values.curriculum['_id'];
@@ -168,12 +167,12 @@ export class CoursesComponent implements OnInit {
     courseObj.termId = values.term['_id'];
     courseObj.termName = values.term['termName'];
     courseObj.termNo = values.term['termNo'];
-    
+
     if(!this.updation) {
       this.httpClient.post<{ response: Course, error: any }>(`${environment.serverUrl}/courses/add-course`, { ...courseObj })
         .toPromise()
         .then((value) => {
-          
+          // console.log(":>>> Value: ", value);
           this.loader = false;
           this.modalService.dismissAll();
           this.toast.success("Course Added Successfully")
@@ -206,18 +205,18 @@ export class CoursesComponent implements OnInit {
   deleteCourse(modalRef: any, id: any) {
     this.modalService.open(modalRef).result.then((value) => {
       this.httpClient.delete(`${environment.serverUrl}/courses/delete-course/${id}`)
-      .toPromise()
-      .then((value) => {
-        this.toast.success("Course Deleted Successfully");
-        let idx = this.courses.findIndex(x => x._id === id);
-        this.courses.splice(idx, 1);
-      }, (err) => {
-        // console.log(">>> error", err);
-      });
-      
+        .toPromise()
+        .then((value) => {
+          this.toast.success("Course Deleted Successfully");
+          let idx = this.courses.findIndex(x => x._id === id);
+          this.courses.splice(idx, 1);
+        }, (err) => {
+          // console.log(">>> error", err);
+        });
+
     }, (err) => {
       console.log(">>> error: ", err);
-      
+
     })
   }
 
