@@ -43,7 +43,7 @@ export class ImportsMarksComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.ciaBool = this.router.url.replace("/", "").split("/").some(x => x.includes('cia'));  
+    this.ciaBool = this.router.url.replace("/", "").split("/").some(x => x.includes('cia'));
   }
 
   courseSelection(value: Course) {
@@ -62,7 +62,7 @@ export class ImportsMarksComponent implements OnInit {
 
   downloadExcel(assessment: Assessments | undefined) {
     let array: any[] = ["Student Name", "URN", "CRN"];
-    assessment?.questions?.forEach((e) => array.push(`Q${e.questionNo} [${e.maximumMarks}] [${e.coCode}]`)); 
+    assessment?.questions?.forEach((e) => array.push(`Q${e.questionNo} [${e.maximumMarks}] [${e.coCode}]`));
     const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([array]);
     const workbook: XLSX.WorkBook = { Sheets: { 'qrcodes': worksheet }, SheetNames: ['qrcodes'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
@@ -84,7 +84,7 @@ export class ImportsMarksComponent implements OnInit {
       var workbook = XLSX.read(bstr, { type: "binary" });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
-      
+
       let studentMarks_excelResponse: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: true });
       let studentMarks = studentMarks_excelResponse.map((std, idx) => {
         let assessmentObj = { ...assessment }; // Shallow Copy of Assessment
@@ -106,13 +106,13 @@ export class ImportsMarksComponent implements OnInit {
         }
       });
       this.importStudentMarks(studentMarks);
-    }    
+    }
   }
 
   importStudentMarks(studentMarks: any[]) {
     this.loader = true;
     this.httpClient.post(
-      `${environment.serverUrl}/attainments/add-student-marks?ciaBool=${this.ciaBool}`, 
+      `${environment.serverUrl}/attainments/add-student-marks?ciaBool=${this.ciaBool}`,
       { data: [...studentMarks] },
       { headers: this.dataService.httpHeaders }
     )
@@ -125,7 +125,7 @@ export class ImportsMarksComponent implements OnInit {
       this.loader = false;
       console.error(">>> error: ", error);
       this.toast.error(error)
-      
+
     })
   }
 
@@ -144,7 +144,7 @@ export class ImportsMarksComponent implements OnInit {
     }, (error) => {
       // console.log(">>> ", error);
       this.toast.error("Something went wrong while fetching records from server!!")
-      
+
     })
   }
 

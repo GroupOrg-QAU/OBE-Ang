@@ -98,24 +98,24 @@ export class PdfService {
 
     const docRef = pdfMake.createPdf({
       header: (currentPage, pageCount, pageSize) => currentPage === 1 ? [] : [
-        { text: 'Guru Nanak Dev Engineering College, Ludhiana', bold: true, alignment: 'center', fontSize: 12, margin: [0, 7, 0, 0] },
+        { text: 'Quaid-I-Azam University, Islamabad', bold: true, alignment: 'center', fontSize: 12, margin: [0, 7, 0, 0] },
         { text: 'Outcome Based Education Report', bold: true, alignment: 'center', fontSize: 10, margin: [0, 2, 0, 2], color: "#707070" },
         { canvas: [{ type: "rect", x: 40, y: 0, w: pageSize.width - 75, h: 0, lineWidth: 1, lineColor: "#000", margin: [0, -4, 0, 0 ] }]},
       ],
       footer: (currentPage, pageCount, pageSize) => currentPage === 1 ? [] : [
         { canvas: [{ type: "rect", x: 40, y: 10, w: pageSize.width - 75, h: 0, lineWidth: 1, lineColor: "#000" }]},
-        { 
+        {
           columns: [
             { text: 'Generated On: ' + dateTimeString, color: '#707070', fontSize: 10 },
-            { text: 'Page ' + (currentPage - 1).toString() + " of " + (pageCount - 1).toString(), alignment: 'right', color: "#707070", fontSize: 10 }    
+            { text: 'Page ' + (currentPage - 1).toString() + " of " + (pageCount - 1).toString(), alignment: 'right', color: "#707070", fontSize: 10 }
           ],
           margin: [38, 4]
         }
       ],
       content: [
         // Title Page
-        { alignment: 'center', text: 'Guru Nanak Dev Engineering College', margin: [0, 240, 0, 0], fontSize: 30 },
-		    { alignment: 'center', text: 'Ludhiana', fontSize: 24 },
+        { alignment: 'center', text: 'Quaid-I-Azam University', margin: [0, 240, 0, 0], fontSize: 30 },
+		    { alignment: 'center', text: 'Islamabad', fontSize: 24 },
 		    { alignment: 'center', text: 'Outcome Based Education Report', margin: [0, 70, 0, 0], fontSize: 18, color: "#707070" },
 		    { alignment: 'center', text:  courseName, fontSize: 20, margin: [0, 4, 0 ,0] },
         { alignment: 'center', text: 'Batch: ' + curriculumName, fontSize: 18, margin: [0, 4, 0 ,0], color: "#707070" },
@@ -123,7 +123,7 @@ export class PdfService {
 
         // Page Content
         { alignment: 'center', text: 'CIA Marks', margin: [0, 20, 0, 10], fontSize: 18, bold: true },
-        { 
+        {
           layout: 'lightHorizontalLines',
           table: {
               headerRows: 1,
@@ -135,7 +135,7 @@ export class PdfService {
           }
         },
         { alignment: 'center', text: 'ESE Marks', margin: [0, 20, 0, 10], fontSize: 18, bold: true },
-        { 
+        {
           layout: 'lightHorizontalLines',
           table: {
               headerRows: 1,
@@ -147,7 +147,7 @@ export class PdfService {
           },
         },
         { alignment: 'center', text: 'Direct Attainment', margin: [0, 20, 0, 10], fontSize: 18, bold: true },
-        { 
+        {
           layout: 'lightHorizontalLines',
           table: {
               headerRows: 1,
@@ -160,7 +160,7 @@ export class PdfService {
           pageBreak: 'after'
         },
         { alignment: 'center', text: 'In-Direct Attainment', margin: [0, 20, 0, 10], fontSize: 18, bold: true },
-        { 
+        {
           layout: 'lightHorizontalLines',
           table: {
               headerRows: 1,
@@ -172,7 +172,7 @@ export class PdfService {
           },
         },
         { alignment: 'center', text: 'Total Attainment', margin: [0, 20, 0, 10], fontSize: 18, bold: true },
-        { 
+        {
           layout: 'lightHorizontalLines',
           table: {
               headerRows: 1,
@@ -185,8 +185,8 @@ export class PdfService {
         },
       ]
     });
-    
+
     return docRef;
-  } 
+  }
 
 }

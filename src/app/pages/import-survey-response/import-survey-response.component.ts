@@ -50,7 +50,7 @@ export class ImportSurveyResponseComponent implements OnInit {
 
   downloadExcel(assessment: Assessments | undefined) {
     let array: any[] = ["Student Name", "URN", "CRN"];
-    assessment?.questions?.forEach((e) => array.push(`Q${e.questionNo} [${e.coCode}]`)); 
+    assessment?.questions?.forEach((e) => array.push(`Q${e.questionNo} [${e.coCode}]`));
     const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([array]);
     const workbook: XLSX.WorkBook = { Sheets: { 'qrcodes': worksheet }, SheetNames: ['qrcodes'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
@@ -72,7 +72,7 @@ export class ImportSurveyResponseComponent implements OnInit {
       var workbook = XLSX.read(bstr, { type: "binary" });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
-      
+
       let studentMarks_excelResponse: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: true });
       let studentMarks = studentMarks_excelResponse.map((std, idx) => {
         let ratings = assessment?.questions?.map((ques, idx) => {
@@ -100,15 +100,15 @@ export class ImportSurveyResponseComponent implements OnInit {
           courseId: assessment?.courseId,
           rating: ratings
         }
-      });     
+      });
       this.importStudentMarks(studentMarks);
-    }    
+    }
   }
 
   importStudentMarks(studentMarks: any[]) {
     this.loader = true;
     this.httpClient.post(
-      `${environment.serverUrl}/surveys/add-survey`, 
+      `${environment.serverUrl}/surveys/add-survey`,
       { data: [...studentMarks] },
       { headers: this.dataService.httpHeaders }
     )
@@ -137,7 +137,7 @@ export class ImportSurveyResponseComponent implements OnInit {
     }, (error) => {
       // console.log(">>> ", error);
       this.toast.error("Something went wrong while fetching records from server!!")
-      
+
     })
   }
 
