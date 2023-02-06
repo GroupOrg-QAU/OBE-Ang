@@ -132,7 +132,7 @@ export class AssessmentsComponent implements OnInit {
 
     if(!this.updation) {
       this.httpClient.post<{ response: Assessments }>(
-        `${environment.serverUrl}/assessments/add-assessment`, 
+        `${environment.serverUrl}/assessments/add-assessment`,
         { ...values }, {
         headers: this.dataService.httpHeaders
       })
@@ -149,7 +149,7 @@ export class AssessmentsComponent implements OnInit {
       });
     } else {
       this.httpClient.put<{ response: Assessments }>(
-        `${environment.serverUrl}/assessments/update-assessment/${values._id}`, 
+        `${environment.serverUrl}/assessments/update-assessment/${values._id}`,
         { ...values }, {
         headers: this.dataService.httpHeaders
       })
@@ -179,10 +179,10 @@ export class AssessmentsComponent implements OnInit {
       }, (err) => {
         // console.log(">>> error", err);
       });
-      
+
     }, (err) => {
       console.log(">>> error: ", err);
-      
+
     })
   }
 

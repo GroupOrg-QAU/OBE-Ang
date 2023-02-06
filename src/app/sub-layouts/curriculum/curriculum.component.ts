@@ -10,7 +10,7 @@ export interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
   { path: 'batches', title: 'Batches', icon: 'book', class: '', children: [] },
-  { path: 'batches', title: 'Terms', icon: 'book', class: '', children: [] },
+  { path: 'add-term', title: 'Terms', icon: 'book', class: '', children: [] },
   { path: 'courses', title: 'Courses', icon: 'book', class: '', children: [] },
   { path: 'co-mapping', title: 'Mapped CO\'s with PO\'s and PEO\'s ', icon: 'map', class: '', children: [] },
 ];

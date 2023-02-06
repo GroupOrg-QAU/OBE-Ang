@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Form, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -95,7 +95,8 @@ export class CoursesComponent implements OnInit {
         totalMarks: [null],
         teeDuration: [null],
         blommsDomain: [null],
-        state: [true]
+        state: [true],
+        poMapId:[null]
       });
     } else {
       this.updation = true;
@@ -134,7 +135,8 @@ export class CoursesComponent implements OnInit {
         totalMarks: [courseObj.totalMarks],
         teeDuration: [courseObj.teeDuration],
         blommsDomain: [courseObj.blommsDomain],
-        state: [courseObj.state]
+        state: [courseObj.state],
+        poMapId:[courseObj]
       });
 
     }

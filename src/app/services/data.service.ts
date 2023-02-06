@@ -18,8 +18,10 @@ export class DataService {
   });
 
   curriculumsSub = new BehaviorSubject<Curriculum[]>([]);
-  curriculumRetrieved: boolean = false;
 
+  // TermsSub = new BehaviorSubject<Term[]>([]);
+  curriculumRetrieved: boolean = false;
+  // TermRetrieved: boolean = false;
   coursessSub = new BehaviorSubject<Course[]>([]);
   coursesRetrieved: boolean = false;
 
@@ -41,6 +43,23 @@ export class DataService {
         .then(res => {
           this.curriculumsSub.next(res?.curriculums.filter(e => e.deptName === this.userModel?.department).map(e => e as Curriculum));
           this.curriculumRetrieved = true;
+        }, err => {
+          console.log(">>> error: ", err);
+
+        });
+    }
+  }
+
+  //
+  getTerms(): void {
+    if(!this.termsRetrieved) {
+      this.httpClient.get<{ terms: Term[] }>(`${environment.serverUrl}/terms`, {
+        headers: this.httpHeaders
+      })
+        .toPromise()
+        .then((res) => {
+          this.termsSub.next(res?.terms.filter(e => e.deptName === this.userModel?.department));
+          this.termsRetrieved = true;
         }, err => {
           console.log(">>> error: ", err);
 

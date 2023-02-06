@@ -9,6 +9,8 @@ import { CourseOutcomeComponent } from '../../pages/course-outcome/course-outcom
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { BatchesComponent } from '../../pages/batches/batches.component';
+import { AddTermComponent } from '../../pages/add-term/add-term.component';
+
 
 
 @NgModule({
@@ -16,7 +18,8 @@ import { BatchesComponent } from '../../pages/batches/batches.component';
     CoursesComponent,
     CoMappingComponent,
     CourseOutcomeComponent,
-    BatchesComponent
+    BatchesComponent,
+    AddTermComponent
   ],
   imports: [
     CommonModule,

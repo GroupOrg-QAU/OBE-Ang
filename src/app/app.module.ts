@@ -16,7 +16,7 @@ import { DataService } from './services/data.service';
   declarations: [
     AppComponent,
     AdminComponent,
-    AuthComponent
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
