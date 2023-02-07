@@ -17,12 +17,13 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./batches.component.css'],
 })
 export class BatchesComponent implements OnInit {
-  batchForm: FormGroup;
+  batchForm: FormGroup | undefined;
   batchUpdateBool: boolean = false;
   departments: any;
   curriculums: Curriculum[] = [];
   curriculumSub: Subscription | undefined;
   userModel: User = JSON.parse(localStorage.getItem('user') || '');
+  loader: any;
 
   constructor(
     private modalService: NgbModal,
@@ -47,7 +48,9 @@ export class BatchesComponent implements OnInit {
 
   openCurriculumModel(modalRef: any, curriculumObj: Curriculum | null = null) {
     this.modalService.open(modalRef, {
-      size: 's',
+      size: 'lg',
+      keyboard: false,
+      backdrop: 'static'
     });
 
     if (curriculumObj === null) {
@@ -59,6 +62,12 @@ export class BatchesComponent implements OnInit {
           this.userModel.firstName + ' ' + this.userModel.lastName
         ),
         curriculumOwnerId: new FormControl(this.userModel._id),
+        credits: new FormControl(""),
+        totalTerms: new FormControl(""),
+        startYear: new FormControl(""),
+        endYear: new FormControl(""),
+        minDuration: new FormControl(""),
+        maxDuration: new FormControl(""),
       });
     } else {
       this.batchUpdateBool = true;
@@ -68,6 +77,12 @@ export class BatchesComponent implements OnInit {
         deptName: new FormControl(curriculumObj.deptName),
         curriculumOwner: new FormControl(curriculumObj.curriculumOwner),
         curriculumOwnerId: new FormControl(this.userModel._id),
+        credits: new FormControl(curriculumObj.credits),
+        totalTerms: new FormControl(curriculumObj.totalTerms),
+        startYear: new FormControl(curriculumObj.startYear),
+        endYear: new FormControl(curriculumObj.endYear),
+        minDuration: new FormControl(curriculumObj.minDuration),
+        maxDuration: new FormControl(curriculumObj.maxDuration),
       });
     }
   }
