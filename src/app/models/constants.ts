@@ -1,11 +1,11 @@
 export const DEPARTMENTS = [
-  'Applied Engineering',
-  'Civil Engineering',
-  'Computer Science and Engineering',
-  'Electrical Engineering',
-  'Electronics & Communications',
+  'Chemistry',
+  'Physics',
+  'Computer Science',
+  'Electronics',
   'Information Technology',
-  'Mechanical Engineering',
+  'Mathematics',
+
 ];
 
 export const ROLES = [
@@ -29,11 +29,10 @@ export const ASSESSMENT_TYPE = ['Assignment', 'MST', 'Quiz', 'ESE'];
 export const DELIVERY_METHODS = [
   'Brainstorming',
   'Case Study',
-  'Case Delivery',
-  'Demostration',
+  'Lecture',
+  'Demonstration',
   'Flipped Class Room Delivery',
-  'Guest Leacture',
-  'Mock Delivery',
+  'Guest Lecture',
   'Workshop or Seminar',
 ];
 
@@ -46,6 +45,6 @@ export const BLOOM_LEVELS = {
   L6: 'L6-Creating : (Formulate, Design, Create)',
 };
 
-export const CO_CODE = ['CO1', 'CO2', 'CO3', 'CO4', 'CO5', 'CO6'];
-export const PO_CODE = ['PO1', 'PO2', 'PO3', 'PO4', 'PO5', 'PO6', 'PO7', 'PO8', 'PO9', 'PO10', 'PO11', 'PO12'];
-export const PSO_CODE = ['PSO1', 'PSO2'];
+export const CO_CODE = ['CO1', 'CO2', 'CO3', 'CO4', 'CO5'];
+export const PO_CODE = ['PO1', 'PO2', 'PO3', 'PO4', 'PO5', 'PO6', 'PO7', 'PO8', 'PO9', 'PO10'];
+export const PSO_CODE = [];

@@ -5,12 +5,14 @@ import { CoMappingComponent } from 'src/app/pages/co-mapping/co-mapping.componen
 import { CourseOutcomeComponent } from 'src/app/pages/course-outcome/course-outcome.component';
 import { CoursesComponent } from 'src/app/pages/courses/courses.component';
 import {AddTermComponent} from "../../pages/add-term/add-term.component";
+import {BatchOutcomeComponent} from "../../pages/batch-outcome/batch-outcome.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'courses', pathMatch: 'full' },
   { path: 'courses/:courseId/course-outcomes', component: CourseOutcomeComponent },
   { path: 'batches', component: BatchesComponent },
-  {path:'add-term', component:AddTermComponent},
+  { path: 'batches/:batchId/batch-outcomes', component: BatchOutcomeComponent },
+  { path:'add-term', component:AddTermComponent},
   { path: 'courses', component: CoursesComponent },
   { path: 'co-mapping', component: CoMappingComponent }
 ];

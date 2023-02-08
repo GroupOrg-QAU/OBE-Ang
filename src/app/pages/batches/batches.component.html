@@ -45,6 +45,10 @@
               <td>{{ batch.createdAt | date: 'dd-MM-yyyy hh:mm:ss a' }}</td>
               <td>
                 <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
+                        (click)="navigateCourseOutcome(batch._id)">
+                  Program Outcome
+                </button>
+                <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
                   (click)="openCurriculumModel(batchModel, batch)">
                   Update
                 </button>

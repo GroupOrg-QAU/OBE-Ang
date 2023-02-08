@@ -11,12 +11,14 @@ import { AuthComponent } from './layouts/auth/auth.component';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrModule } from 'ngx-toastr';
 import { DataService } from './services/data.service';
+// import { BatchOutcomeComponent } from './pages/batch-outcome/batch-outcome.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminComponent,
     AuthComponent,
+    // BatchOutcomeComponent,
   ],
   imports: [
     BrowserModule,

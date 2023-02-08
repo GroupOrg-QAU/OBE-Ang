@@ -58,6 +58,9 @@ export class CourseOutcomeComponent implements OnInit, OnDestroy {
     this.data.getCourses();
     this.courseSub = this.data.coursessSub.subscribe(res => {
       if(res.length != 0) {
+        console.log("behlole: ", res)
+        console.log("behlole2: ", this.courseId)
+
         this.courseModel = res.find(x => x._id === this.courseId);
       }
     });
@@ -68,11 +71,13 @@ export class CourseOutcomeComponent implements OnInit, OnDestroy {
       .toPromise()
       .then((value) => {
         this.courseOutcomeList = [ ...value.coursesCO ];
+        // console.log("behlole3: ", this.courseOutcomeList)
         this.tempCourseOutcomeList = [ ...value.coursesCO ];
         this.filterListByCOType();
       }, (error) => {
         // console.log(">>> Error: ", error);
       })
+
   }
 
   filterListByCOType(coType: number = 0) {

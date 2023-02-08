@@ -10,7 +10,7 @@ import { Curriculum } from 'src/app/models/curriculum';
 import { User } from 'src/app/models/user';
 import { DataService } from 'src/app/services/data.service';
 import { environment } from 'src/environments/environment';
-
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-batches',
   templateUrl: './batches.component.html',
@@ -29,7 +29,9 @@ export class BatchesComponent implements OnInit {
     private modalService: NgbModal,
     private httpClient: HttpClient,
     private toast: ToastrService,
-    private data: DataService
+    private data: DataService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -162,5 +164,9 @@ export class BatchesComponent implements OnInit {
         console.log('>>> error: ', err);
       }
     );
+  }
+
+  navigateCourseOutcome(batchId: any) {
+    this.router.navigate([batchId, 'batch-outcomes'], { relativeTo: this.route });
   }
 }
