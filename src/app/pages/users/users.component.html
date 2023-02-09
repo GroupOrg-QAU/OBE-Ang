@@ -11,7 +11,7 @@
             </div>
             <div class="col-12 col-sm-6">
               <div class="d-flex flex-column justify-content-end align-items-end" style="height: 100%;">
-                <button class="btn d-flex align-items-center" (click)="openUserModal(userModal)">
+                <button class="btn btn-primary d-flex align-items-center" (click)="openUserModal(userModal)">
                   <span class="material-icons mr-1">add</span>
                   Add Faculty
                 </button>
@@ -47,11 +47,11 @@
                 <td>{{ user.mobile }}</td>
                 <td>{{ user.designation }}</td>
                 <td>
-                  <button type="button" class="btn btn-sm mr-1 mb-1"
+                  <button type="button" class="btn btn-primary btn-sm mr-1 mb-1"
                     (click)="openUserModal(userModal, user)">
                     Update
                   </button>
-                  <button type="button" class="btn btn-sm mr-1 mb-1" (click)="deleteUser(deleteModal, user._id)" style="background-color: rgb(228, 28, 28);" >Delete</button>
+                  <button type="button" class="btn btn-danger btn-sm mr-1 mb-1" (click)="deleteUser(deleteModal, user._id)" style="background-color: rgb(228, 28, 28);" >Delete</button>
                 </td>
               </tr>
             </tbody>

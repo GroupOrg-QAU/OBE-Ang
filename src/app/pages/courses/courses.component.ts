@@ -160,6 +160,7 @@ export class CoursesComponent implements OnInit {
   submitForm(form: FormGroup) {
     this.loader = true;
     let values = { ...form.value };
+    console.log("behlole5:", values)
     let courseObj: Course | any = { ...form.value };
 
     delete courseObj['curriculum'];

@@ -13,7 +13,7 @@ export const ROUTES: RouteInfo[] = [
   { path: 'import-tee-marks', title: 'Exam Data Import', icon: 'import_export', class: '', children: [] },
   // { path: 'import-survey-response', title: 'Survey Response', icon: 'import_export', class: '', children: [] },
   { path: 'co-attainment', title: 'CO Attainment', icon: 'functions', class: '', children: [] },
-  { path: 'po-attainment', title: 'PO/PEO Attainment', icon: 'functions', class: '', children: [] },
+  // { path: 'po-attainment', title: 'PO/PEO Attainment', icon: 'functions', class: '', children: [] },
   // { path: 'attainment-gap', title: 'Attainment Gap', icon: 'functions', class: '', children: [] },
 ];
 

@@ -45,7 +45,7 @@
             </td>
             <td>
               <div class="d-flex flex-column">
-                <span>{{ term.batchName }}</span>
+                <span>{{ term.curriculumName }}</span>
               </div>
             </td>
 
@@ -116,12 +116,12 @@
         </div>
 
         <div class="form-group col-12 col-sm-6">
-          <label for="batch" class="text-sm">Curriculum</label>
-          <select name="batch" id="batch" #bat class="custom-select" formControlName="batch"
-                  (change)="batchTerms($event.target.value)">
+          <label for="curriculum" class="text-sm">Curriculum</label>
+          <select name="curriculum" id="curriculum" #curr class="custom-select" formControlName="curriculum"
+                  (change)="curriculumTerms($event.target.value)">
             <option [ngValue]="null">Select...</option>
-            <option *ngFor="let bat of batches" [ngValue]="bat">
-              {{ bat.batchName }}
+            <option *ngFor="let curr of curriculums" [ngValue]="curr">
+              {{ curr.curriculumName }}
             </option>
           </select>
         </div>

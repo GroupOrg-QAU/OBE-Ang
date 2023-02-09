@@ -66,10 +66,11 @@ export class BatchOutcomeComponent implements OnInit, OnDestroy {
     this.data.getCurriculums();
     this.curriculumSub = this.data.curriculumsSub.subscribe(res => {
       if(res.length != 0) {
-        // console.log("behlole: ", res)
-        // console.log("behlole2: ", this.curriculumId)
+        console.log("behlole: ", res)
+        console.log("behlole2: ", this.curriculumId)
 
         this.curriculumModel = res.find(x => x._id === this.curriculumId);
+        console.log("behlole3:", this.curriculumModel?._id)
       }
     });
     this.httpClient.get<{ curriculumPO: ProgramOutcomes[] }>(`${environment.serverUrl}/program-outcomes/${this.curriculumId}`, {
@@ -105,6 +106,7 @@ export class BatchOutcomeComponent implements OnInit, OnDestroy {
     this.programOutcomeForm = this.fb.group({
       _id: [poObj?._id],
       curriculumId: [this.curriculumModel?._id],
+
       curriculumName: [this.curriculumModel?.curriculumName],
       // termId: [this.batchModel?.termId],
       // termName: [this.courseModel?.termName],
@@ -150,6 +152,7 @@ export class BatchOutcomeComponent implements OnInit, OnDestroy {
 
   openCurriculumOutcomeModal(modalRef: any, poObj?: ProgramOutcomes) {
     this.initialisedForm(poObj);
+    console.log("behlole4:", poObj)
     this.modalService.open(modalRef);
   }
 
