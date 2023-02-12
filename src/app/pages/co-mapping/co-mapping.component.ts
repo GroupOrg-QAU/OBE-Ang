@@ -7,6 +7,7 @@ import { Course } from 'src/app/models/course';
 import { CourseOutcomes } from 'src/app/models/course-outcomes';
 import { DataService } from 'src/app/services/data.service';
 import { environment } from 'src/environments/environment';
+import {ProgramOutcomes} from "../../models/program-outcomes";
 
 @Component({
   selector: 'app-co-mapping',
@@ -15,6 +16,12 @@ import { environment } from 'src/environments/environment';
 })
 export class CoMappingComponent implements OnInit {
 
+  courses: Course[] = [];
+  curriculumId: string | undefined;
+
+  programOutcomeList: ProgramOutcomes[] = [];
+  tempProgramOutcomeList: ProgramOutcomes[] = [];
+
   coMappingForm: FormGroup;
 
   selectedCourse: Course;
@@ -22,12 +29,14 @@ export class CoMappingComponent implements OnInit {
   selectedCourseCOCodes: string[] = [];
 
   poCodes: string[] = [];
+  dummyPOCodes: ProgramOutcomes[] = [];
   psoCodes: string[] = [];
 
   selectedPO: any;
   enableSelects: boolean = false;
 
   constructor(
+    private data: DataService,
     private fb: FormBuilder,
     private httpClient: HttpClient,
     private dataService: DataService,
@@ -37,6 +46,25 @@ export class CoMappingComponent implements OnInit {
   ngOnInit(): void {
     this.poCodes = [...PO_CODE];
     this.psoCodes = [...PSO_CODE];
+  //
+  //
+  //   ?
+  //  // let randomId = this.selectedCourse.curriculumId;
+  //   ?
+  //   console.log("behlole3: ", randomId)
+  //   this.httpClient.get<{ curriculumPO: ProgramOutcomes[] }>(`${environment.serverUrl}/program-outcomes/${randomId}`, {
+  //     headers: this.data.httpHeaders
+  //   }).toPromise().then((value) => {
+  //     this.programOutcomeList = [ ...value.curriculumPO ];
+  //     this.tempProgramOutcomeList = [ ...value.curriculumPO ];
+  //     console.log("behlole3: ", this.programOutcomeList)
+  //   }, (error) => {
+  //
+  //       // this.filterListByCOType();
+  //       console.log(">>> Error: ", error);
+  //     })
+  //
+  //
   }
 
   getCourses(course: Course) {
@@ -51,6 +79,27 @@ export class CoMappingComponent implements OnInit {
         this.initialiseFormGroup(this.selectedCourse.poMapId || "");
         this.getPOMap();
       }, (error) => { });
+
+    let randomId = this.selectedCourse.curriculumId;
+    //   ?
+    console.log("behlole3: ", randomId)
+    this.httpClient.get<{ curriculumPO: ProgramOutcomes[] }>(`${environment.serverUrl}/program-outcomes/${randomId}`, {
+      headers: this.data.httpHeaders
+    }).toPromise().then((value) => {
+      this.programOutcomeList = [ ...value.curriculumPO ];
+      this.tempProgramOutcomeList = [ ...value.curriculumPO ];
+      console.log("behlole3: ", this.programOutcomeList)
+      this.dummyPOCodes = this.programOutcomeList;
+      console.log("behlole4: ", [...this.dummyPOCodes])
+    }, (error) => {
+
+      // this.filterListByCOType();
+      console.log(">>> Error: ", error);
+    })
+
+
+
+
   }
 
   getPOMap() {
@@ -90,6 +139,49 @@ export class CoMappingComponent implements OnInit {
     this.selectedCourseCOCodes.forEach((code, index) => {
       this.coMappingForm.addControl(code, this.fb.group({}))
     });
+    // here add the patch endpoint
+    let dummyCourse = [this.selectedCourse];
+    let dummyCourse2 = dummyCourse[0];
+    console.log("behlole10: ", dummyCourse2)
+    dummyCourse2.poMapId = [id];
+    console.log("behlole11: ", dummyCourse2)
+
+    this.httpClient.put<{ response: Course }>(`${environment.serverUrl}/courses/update-course/${dummyCourse2._id}`, { ...dummyCourse2 })
+      .toPromise()
+      .then((value) => {
+        // console.log(":>>> Value: ", value);
+        // this.loader = false;
+        // this.modalService.dismissAll();
+        this.toast.success("Course Updated Successfully")
+
+        let idx = this.courses.findIndex(x => x._id === dummyCourse2._id);
+        this.courses[idx] = {...value.response};
+      }, (err) => {
+        console.log(">>> err: ", err);
+        // this.loader = false;
+        // this.toast.error(err.error.message);
+      });
+    //
+    //7
+    // this.httpClient.put<{ response: Course }>(`${environment.serverUrl}/courses/update-course/${courseObj._id}`, { ...courseObj })
+    //   .toPromise()
+    //   .then((value) => {
+    //     // console.log(":>>> Value: ", value);
+    //     this.loader = false;
+    //     this.modalService.dismissAll();
+    //     this.toast.success("Course Updated Successfully")
+    //
+    //     let idx = this.courses.findIndex(x => x._id === courseObj._id);
+    //     this.courses[idx] = { ...value.response };
+    //   }, (err) => {
+    //     // console.log(">>> err: ", err);
+    //     this.loader = false;
+    //     this.toast.error(err.error.message);
+    //   });
+    //7
+    //
+
+
   }
 
   addPOFormGroup(coCode: string, poCode: string, strength: number) {
@@ -120,5 +212,6 @@ export class CoMappingComponent implements OnInit {
         this.toast.warning("Something Went Wrong!! Please Try Again", "Error");
       })
   }
+
 
 }

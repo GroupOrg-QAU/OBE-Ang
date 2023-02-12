@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Form, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -136,7 +136,7 @@ export class CoursesComponent implements OnInit {
         teeDuration: [courseObj.teeDuration],
         blommsDomain: [courseObj.blommsDomain],
         state: [courseObj.state],
-        poMapId:[courseObj]
+        poMapId:[courseObj.poMapId]
       });
 
     }
@@ -160,7 +160,6 @@ export class CoursesComponent implements OnInit {
   submitForm(form: FormGroup) {
     this.loader = true;
     let values = { ...form.value };
-    console.log("behlole5:", values)
     let courseObj: Course | any = { ...form.value };
 
     delete courseObj['curriculum'];

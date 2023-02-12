@@ -25,15 +25,15 @@
           <thead class="thead-light">
           <tr>
             <th></th>
-            <th *ngFor="let po of poCodes">{{ po }}</th>
-            <th *ngFor="let pso of psoCodes">{{ pso }}</th>
+            <th *ngFor="let po of dummyPOCodes">{{ po.poCode }}</th>
+<!--            <th *ngFor="let pso of psoCodes">{{ pso }}</th>-->
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let co of selectedCourseCOCodes; index as idx">
             <td>{{ co }}</td>
-            <td *ngFor="let po of poCodes">
-              <select class="custom-select" name="poStrength" [id]="co+po+'Strength'" [disabled]="!enableSelects" (change)="addPOFormGroup(co, po, $event.target.value)">
+            <td *ngFor="let po of dummyPOCodes">
+              <select class="custom-select" name="poStrength" [id]="co+po.poCode+'Strength'" [disabled]="!enableSelects" (change)="addPOFormGroup(co, po.poCode, $event.target.value)">
                 <option [value]="0">0</option>
                 <option [value]="1">1</option>
                 <option [value]="2">2</option>
